@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-md-2">
       <button
-        class="btn btn-outline-secondary shadow"
+        class="btn btn-outline-secondary shadow mb-2"
         routerLink="/user-dashboard"
       >
         Back to User Information
       </button>
     </div>
     <div class="col-md-10">
-      <div class="card shadow">
+      <div class="card shadow mt-2">
         <div class="card-header text-center">
           <h2 class="font-wait-bold p-0 m-0">
             {{ IsineditMode ? "Update User" : "Add User" }}
@@ -290,7 +290,7 @@
                 class="row d-flex align-items-start"
                 *ngFor="let skill of skills.controls; let i = index"
               >
-                <div class="col-md-8">
+                <div class="col-md-8 mb-2">
                   <div class="form-group">
                     <input
                       type="text"
@@ -306,7 +306,7 @@
                     </small>
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mb-2">
                   <button
                     *ngIf="i > 0"
                     class="btn btn-outline-danger"
