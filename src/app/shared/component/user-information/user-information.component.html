@@ -1,0 +1,97 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-2">
+      <button class="btn btn-secondary" routerLink="/user-dashboard">
+        <- Back to Dashboard
+      </button>
+    </div>
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-4">
+          <mat-card class="example-card shadow">
+            <img [src]="userObj.imageUrl || userImage" />
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>{{ userObj.name }}</mat-card-title>
+            <mat-card-subtitle>{{ userObj.description }}</mat-card-subtitle>
+            <mat-card-content> </mat-card-content>
+            <mat-card-actions class="d-flex justify-content-between">
+              <button
+                mat-mini-fab
+                color="primary"
+                aria-label="Example icon button with a menu icon"
+                (click)="editUser()"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-mini-fab
+                color="warn"
+                aria-label="Example icon button with a menu icon"
+                (click)="deleteData()"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div class="col-md-8">
+          <div class="row">
+            <mat-card class="example-card w-100 shadow">
+              <mat-card-title>User Information</mat-card-title>
+              <mat-card-content>
+                <p>
+                  <strong>Experience:</strong> {{ userObj.experience }} years
+                </p>
+                <p><strong>Role:</strong> {{ userObj.role }}</p>
+              </mat-card-content>
+            </mat-card>
+            <br />
+          </div>
+
+          <div class="row mt-4">
+            <mat-card class="example-card w-100">
+              <mat-card-title>Skills</mat-card-title>
+
+              <mat-card-content>
+                <mat-chip-list *ngIf="userObj.skills.length; else noSkills">
+                  <mat-chip *ngFor="let skill of userObj.skills">
+                    {{ skill }}
+                  </mat-chip>
+                </mat-chip-list>
+
+                <ng-template #noSkills>
+                  <p>No skills available.</p>
+                </ng-template>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="row mt-4">
+            <mat-card class="example-card w-100 shadow">
+              <mat-card-content>
+                <div class="row">
+                  <div class="col-md-6">
+                    <h3>CurrentAddress</h3>
+                    <p>{{ userObj.address.currentAddress.country }}</p>
+                    <p>{{ userObj.address.currentAddress.state }}</p>
+                    <p>{{ userObj.address.currentAddress.city }}</p>
+                    <p>{{ userObj.address.currentAddress.zipcode }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <h3>PermanentAddress</h3>
+                    <p>{{ userObj.address.permanentAddress.country }}</p>
+                    <p>{{ userObj.address.permanentAddress.state }}</p>
+                    <p>{{ userObj.address.permanentAddress.city }}</p>
+                    <p>{{ userObj.address.permanentAddress.zipcode }}</p>
+                  </div>
+                </div>
+              </mat-card-content>
+              <mat-card-footer> </mat-card-footer>
+            </mat-card>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
