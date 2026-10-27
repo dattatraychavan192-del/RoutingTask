@@ -1,20 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-get-confirm',
   templateUrl: './get-confirm.component.html',
-  styleUrls: ['./get-confirm.component.scss']
+  styleUrls: ['./get-confirm.component.scss'],
 })
-export class GetConfirmComponent implements OnInit {
-  msg!: string;
-  constructor(private _matdailogRef: MatDialogRef<GetConfirmComponent>) { }
+export class GetConfirmComponent {
+  constructor(
+    private _dialogRef: MatDialogRef<GetConfirmComponent>,
+    @Inject(MAT_DIALOG_DATA) public msg: string,
+  ) {}
 
-  ngOnInit(): void {
+  onClose(flag: boolean): void {
+    this._dialogRef.close(flag);
   }
-
-onClose(flag:boolean){
-this._matdailogRef.close(flag)
-}
-
 }

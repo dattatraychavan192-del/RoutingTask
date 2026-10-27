@@ -1,5 +1,25 @@
-<strong class="text-black">Are You sure you want to remove User ?</strong>
-<div class="card-footer d-flex justify-content-between">
-  <button class="btn btn-outline-info" (click)="onClose(true)">Yes</button>
-  <button class="btn btn-outline-danger" (click)="onClose(false)">No</button>
-</div>
+<h2 mat-dialog-title>Confirm Delete</h2>
+
+<mat-dialog-content>
+  {{ msg }}
+</mat-dialog-content>
+
+<mat-dialog-actions class="d-flex justify-content-between">
+  <button
+    mat-raised-button
+    color="primary"
+    aria-label="Example icon button with a filter list icon"
+    (click)="onClose(true)"
+  >
+    Yes
+  </button>
+
+  <button
+    mat-raised-button
+    color="warn"
+    aria-label="Example icon button with a filter list icon"
+    (click)="onClose(false)"
+  >
+    No
+  </button>
+</mat-dialog-actions>

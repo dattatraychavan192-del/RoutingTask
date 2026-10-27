@@ -1,9 +1,9 @@
 import { state } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserServiceService } from '../../servcie/user-service.service';
-import { Iuser } from '../../model/user';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Iuser } from '../../model/user';
+import { UserServiceService } from '../../servcie/user-service.service';
 import { SnackbarService } from '../../servcie/snackbar.service';
 
 @Component({
@@ -28,7 +28,13 @@ export class UserFormComponent implements OnInit {
     this.addSkill();
     this.checkboxEnable();
     this.patchAdd();
-    this.patchData();
+    const userId = this._routes.snapshot.params['id'];
+    if (userId) {
+      this.IsineditMode = true;
+      this._userService.getUserById(userId).subscribe({
+        next: (user) => this.patchData(user),
+      });
+    }
   }
 
   checkboxEnable() {
@@ -57,17 +63,27 @@ export class UserFormComponent implements OnInit {
     });
   }
 
-  patchData() {
+  patchData(user: Iuser) {
     let userId = this._routes.snapshot.params['id'];
-    if (userId) {
-      this.IsineditMode = true;
-
-      this._userService.getUserById(userId).subscribe({
-        next: (res) => {
-          this.loginForm.patchValue(res);
-        },
-      });
+    this.skills.clear();
+    for (const skill of user.skills) {
+      this.skills.push(new FormControl(skill, Validators.required));
     }
+
+    this.loginForm.patchValue({
+      ...user,
+      permanentAdd: user.address.permanentAddress,
+    });
+    // if (userId) {
+    //   this.IsineditMode = true;
+
+    //   this._userService.getUserById(userId).subscribe({
+    //     next: (res) => {
+
+    //       this.loginForm.patchValue(res);
+    //     },
+    //   });
+    // }
   }
 
   formSUbmit() {
@@ -96,7 +112,7 @@ export class UserFormComponent implements OnInit {
         }),
       }),
       sameAdd: new FormControl({ value: false, disabled: true }),
-      image: new FormControl(null, Validators.required),
+      imageUrl: new FormControl(null),
     });
   }
 
@@ -132,7 +148,9 @@ export class UserFormComponent implements OnInit {
         next: (res) => {
           this.loginForm.reset();
           this._route.navigate(['/user-dashboard']);
-          this._snackbar.snackbar('New user add successfully..');
+          this._snackbar.snackbar(
+            `New user add successfully  with ID ${res.name}`,
+          );
         },
       });
     }
@@ -144,7 +162,9 @@ export class UserFormComponent implements OnInit {
     }
   }
 
-  removeSkill(id: number) {}
+  removeSkill(id: number) {
+    this.skills.removeAt(id);
+  }
 
   updateData() {
     let userId = this._routes.snapshot.params['id'];
@@ -156,7 +176,7 @@ export class UserFormComponent implements OnInit {
           this.IsineditMode = false;
           console.log(res);
           this._route.navigate(['/user-dashboard']);
-          this._snackbar.snackbar('New user add successfully..');
+          this._snackbar.snackbar(`User update successfully with Id ${res.name}`);
         },
         error: (err) => {
           console.log(err);

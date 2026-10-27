@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Iuser } from '../../model/user';
 import { UserServiceService } from '../../servcie/user-service.service';
 import { GetConfirmComponent } from '../get-confirm/get-confirm.component';
+import { SnackbarService } from '../../servcie/snackbar.service';
 
 @Component({
   selector: 'app-user-information',
@@ -22,6 +23,7 @@ export class UserInformationComponent implements OnInit {
     private _roter: Router,
     private _routes: ActivatedRoute,
     private _matDialog: MatDialog,
+    private _snackbar: SnackbarService,
   ) {}
 
   ngOnInit(): void {
@@ -39,9 +41,6 @@ export class UserInformationComponent implements OnInit {
     this._userService.getUserById(this.userID).subscribe({
       next: (res: Iuser) => {
         this.userObj = res;
-        console.log('Single user data:', res);
-        console.log('Skills:', res?.skills);
-        console.log('Address:', res?.address);
       },
       error: (err) => {
         console.error('Failed to fetch user:', err);
@@ -55,24 +54,36 @@ export class UserInformationComponent implements OnInit {
   }
 
   deleteData(): void {
-    let config = new MatDialogConfig();
-    config.data = 'Are you sure ? you want to remove it!';
+    if (!this.userID) {
+      this._snackbar.snackbar('User ID not found');
+      return;
+    }
+
+    const config = new MatDialogConfig<string>();
+    config.data = 'Are you sure you want to remove this user?';
     config.width = '400px';
     config.disableClose = true;
-    let matdialogRef = this._matDialog.open(GetConfirmComponent, config);
-    matdialogRef.afterClosed().subscribe({
-      next: (flag) => {
-        if (!flag) return;
-        this._userService.removeUser(this.userID).subscribe({
-          next: () => {
-            alert('User removed successfully');
-            this._roter.navigate(['/user-dashboard']);
-          },
-          error: (err) => {
-            console.error('Failed to delete user:', err);
-          },
-        });
-      },
+
+    const dialogRef = this._matDialog.open(GetConfirmComponent, config);
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed !== true) {
+        return;
+      }
+
+      this._userService.removeUser(this.userID).subscribe({
+        next: (res) => {
+          this._snackbar.snackbar(
+            `User delete successfully with Id ${res.name}`,
+          );
+
+          this._roter.navigate(['/user-dashboard']);
+        },
+        error: (err) => {
+          console.error('Delete error:', err);
+          this._snackbar.snackbar('Failed to remove user');
+        },
+      });
     });
   }
 }
