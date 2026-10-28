@@ -141,6 +141,7 @@ export class UserFormComponent implements OnInit {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
     } else {
+      `             `;
       let user: Iuser = this.loginForm.getRawValue();
       console.log(user);
 
@@ -176,7 +177,9 @@ export class UserFormComponent implements OnInit {
           this.IsineditMode = false;
           console.log(res);
           this._route.navigate(['/user-dashboard']);
-          this._snackbar.snackbar(`User update successfully with Id ${res.name}`);
+          this._snackbar.snackbar(
+            `User update successfully with Id ${res.name}`,
+          );
         },
         error: (err) => {
           console.log(err);
