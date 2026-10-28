@@ -73,9 +73,7 @@ export class UserInformationComponent implements OnInit {
 
       this._userService.removeUser(this.userID).subscribe({
         next: (res) => {
-          this._snackbar.snackbar(
-            `User delete successfully with Id ${res.name}`,
-          );
+          this._snackbar.snackbar(`User delete successfully `);
 
           this._roter.navigate(['/user-dashboard']);
         },

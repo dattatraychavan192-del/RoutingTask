@@ -149,9 +149,7 @@ export class UserFormComponent implements OnInit {
         next: (res) => {
           this.loginForm.reset();
           this._route.navigate(['/user-dashboard']);
-          this._snackbar.snackbar(
-            `New user add successfully  with ID ${res.name}`,
-          );
+          this._snackbar.snackbar(`New user add successfully...`);
         },
       });
     }
@@ -177,9 +175,7 @@ export class UserFormComponent implements OnInit {
           this.IsineditMode = false;
           console.log(res);
           this._route.navigate(['/user-dashboard']);
-          this._snackbar.snackbar(
-            `User update successfully with Id ${res.name}`,
-          );
+          this._snackbar.snackbar(`User update successfully...`);
         },
         error: (err) => {
           console.log(err);
